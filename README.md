@@ -1,0 +1,9 @@
+# Draw-By-Days Terraform Modules
+
+Reusable Terraform modules for [Draw-By-Days](). They have been moved into their own repository
+to:
+ * **Save me money** - the tests run against AWS on every commit
+ * **Simplify configuration** - Terragrunt only supports absolute paths, so [modules cannot easily 
+ reference other modules](https://community.gruntwork.io/t/relative-paths-in-terragrunt-modules/144/6). By
+ moving them out into their own repository I can create service modules that reference multiple modules
+ using their URLS. See [xyz]() for an example.
