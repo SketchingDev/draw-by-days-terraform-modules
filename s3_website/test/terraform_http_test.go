@@ -13,7 +13,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
-func TestTerraformHttpExample(t *testing.T) {
+func TestS3WebsiteServesFile(t *testing.T) {
 	t.Parallel()
 
 	// Given

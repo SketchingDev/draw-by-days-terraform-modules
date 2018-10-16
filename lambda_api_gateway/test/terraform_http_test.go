@@ -10,7 +10,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
-func TestTerraformHttpExample(t *testing.T) {
+func TestApiGatewayReturnsLambdaResponse(t *testing.T) {
 	t.Parallel()
 
 	// Given
