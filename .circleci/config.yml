@@ -13,13 +13,13 @@ jobs:
       - run:
           name: Test S3 website
           command: |
-            dep ensure
+            dep ensure -v
             go test -v -run TestS3WebsiteServesFile
           working_directory: s3_website/test/
       - run:
           name: Test lambda API gateway
           command: |
-            dep ensure
+            dep ensure -v
             go test -v -run TestApiGatewayReturnsLambdaResponse
           working_directory: lambda_api_gateway/test/
 

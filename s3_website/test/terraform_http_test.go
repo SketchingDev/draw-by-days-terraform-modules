@@ -20,7 +20,7 @@ func TestS3WebsiteServesFile(t *testing.T) {
 	validS3BucketChars := strings.Split("abcdefghijklmnopqrstuvwxyz", "")
 	uniqueID := random.RandomString(validS3BucketChars)
 
-	s3BucketName := fmt.Sprintf("terratest-http-example-%s", uniqueID)
+	namespace := fmt.Sprintf("terratest-http-example-%s", uniqueID)
 	// s3BucketName := "terratest_http_example_3"
 	// t.Fatal(s3BucketName)
 	awsRegion := "us-east-1" //:= aws.GetRandomRegion(t, nil, nil)
@@ -30,7 +30,7 @@ func TestS3WebsiteServesFile(t *testing.T) {
 		TerraformDir: terraformDir,
 
 		Vars: map[string]interface{}{
-			"bucket_name": s3BucketName,
+			"namespace": namespace,
 		},
 
 		EnvVars: map[string]string{
