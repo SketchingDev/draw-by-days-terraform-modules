@@ -1,9 +1,13 @@
-version: 2
-jobs:
-  test_s3_website:
+version: 2.1
+executors:
+  terratest_executor:
     docker:
       - image: sketchingdev/golang-terratest:latest
     working_directory: /go/src/app
+
+jobs:
+  test_s3_website:
+    executor: terratest_executor
     steps:
       - checkout
       - run:
@@ -13,9 +17,7 @@ jobs:
             go test -v -run TestS3WebsiteServesFile
           working_directory: s3_website/test/
   test_lambda_api_gateway:
-    docker:
-      - image: sketchingdev/golang-terratest:latest
-    working_directory: /go/src/app
+    executor: terratest_executor
     steps:
       - checkout
       - run:
