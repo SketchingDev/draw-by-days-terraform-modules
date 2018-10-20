@@ -1,21 +1,21 @@
 version: 2
 jobs:
-  test:
+  test_s3_website:
     docker:
-      - image: sketchingdev/circleci-golang:latest
-
-    working_directory: ~/repo
-
+      - image: sketchingdev/golang-terratest:latest
     steps:
       - checkout
-      - attach_workspace:
-          at: /tmp/workspace
       - run:
           name: Test S3 website
           command: |
             dep ensure -v
             go test -v -run TestS3WebsiteServesFile
           working_directory: s3_website/test/
+  test_lambda_api_gateway:
+    docker:
+      - image: sketchingdev/golang-terratest:latest
+    steps:
+      - checkout
       - run:
           name: Test lambda API gateway
           command: |
@@ -25,6 +25,7 @@ jobs:
 
 workflows:
   version: 2
-  build_and_deploy:
+  tests:
     jobs:
-      - test
+      - test_s3_website
+      - test_lambda_api_gateway

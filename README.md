@@ -1,5 +1,7 @@
 # Draw-By-Days Terraform Modules
 
+[![Build Status](https://circleci.com/gh/SketchingDev/draw-by-days-terraform-modules/tree/master.svg?style=svg)](https://circleci.com/gh/SketchingDev/draw-by-days-terraform-modules/tree/master)
+
 Reusable Terraform modules for [Draw-By-Days](). They have been moved into their own repository
 to:
  * **Save me money** - the tests run against AWS on every commit
