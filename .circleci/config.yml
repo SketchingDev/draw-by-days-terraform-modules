@@ -3,6 +3,7 @@ jobs:
   test_s3_website:
     docker:
       - image: sketchingdev/golang-terratest:latest
+    working_directory: /go/src/app
     steps:
       - checkout
       - run:
@@ -14,6 +15,7 @@ jobs:
   test_lambda_api_gateway:
     docker:
       - image: sketchingdev/golang-terratest:latest
+    working_directory: /go/src/app
     steps:
       - checkout
       - run:
