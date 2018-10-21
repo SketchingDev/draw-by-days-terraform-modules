@@ -25,9 +25,8 @@ func TestS3WebsiteServesFile(t *testing.T) {
 	// t.Fatal(s3BucketName)
 	awsRegion := "us-east-1" //:= aws.GetRandomRegion(t, nil, nil)
 
-	terraformDir := "../"
 	terraformOptions := &terraform.Options{
-		TerraformDir: terraformDir,
+		TerraformDir: "../",
 
 		Vars: map[string]interface{}{
 			"namespace": namespace,
@@ -42,6 +41,7 @@ func TestS3WebsiteServesFile(t *testing.T) {
 
 	// When
 	terraform.InitAndApply(t, terraformOptions)
+	s3BucketName := terraform.OutputRequired(t, terraformOptions, "bucket_name")
 
 	key := "index.html"
 	body := strings.NewReader("This is the body")
