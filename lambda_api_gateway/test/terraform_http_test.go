@@ -19,14 +19,13 @@ func TestApiGatewayReturnsLambdaResponse(t *testing.T) {
 
 	awsRegion := "us-east-1" //:= aws.GetRandomRegion(t, nil, nil)
 
-	terraformDir := "../"
 	terraformOptions := &terraform.Options{
-		TerraformDir: terraformDir,
+		TerraformDir: "../",
 
 		Vars: map[string]interface{}{
 			"namespace":       namespace,
 			"stage_name":      "test",
-			"lambda_filename": terraformDir + "/test/test-handler.zip",
+			"lambda_filename": "test/test-handler.zip",
 			"lambda_handler":  "main.handler",
 		},
 
