@@ -36,6 +36,7 @@ resource "aws_api_gateway_deployment" "gateway_deployment" {
 resource "aws_lambda_function" "gateway_lambda" {
   function_name = "${var.namespace}_lambda"
   filename = "${var.lambda_filename}"
+  source_code_hash = "${base64sha256(file("${var.lambda_filename}"))}"
 
   handler = "${var.lambda_handler}"
   runtime = "nodejs8.10"
