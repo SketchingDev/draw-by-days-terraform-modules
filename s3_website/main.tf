@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "website" {
-  bucket = "${var.namespace}-website"
+  bucket = "${var.name}"
   acl = "public-read"
   policy = <<EOF
 {
@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "website" {
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.namespace}-website/*",
+      "Resource": "arn:aws:s3:::${var.name}/*",
       "Principal": "*"
     }
   ]
