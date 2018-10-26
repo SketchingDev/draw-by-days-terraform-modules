@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "website" {
-  bucket = "${var.namespace}-website"
+  bucket = "${var.name}"
   acl = "public-read"
   policy = <<EOF
 {
@@ -12,15 +12,15 @@ resource "aws_s3_bucket" "website" {
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.namespace}-website/*",
+      "Resource": "arn:aws:s3:::${var.name}/*",
       "Principal": "*"
     }
   ]
 }
 EOF
   website {
-    index_document = "index.html"
-    error_document = "404.html"
+    index_document = "${var.index_document}"
+    error_document = "${var.error_document}"
   }
   force_destroy = true
 }
