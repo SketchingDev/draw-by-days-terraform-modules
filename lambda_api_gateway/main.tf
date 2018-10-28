@@ -83,81 +83,6 @@ resource "aws_api_gateway_integration" "lambda_root" {
   uri                     = "${aws_lambda_function.gateway_lambda.invoke_arn}"
 }
 
-resource "aws_acm_certificate" "cert" {
-  domain_name       = "${var.domain_name}"
-  validation_method = "DNS"
-}
-
-output "validation-options" {
-  value = "${aws_acm_certificate.cert.domain_validation_options}"
-}
-
-# resource "aws_route53_record" "cert-valid" {
-#   zone_id = "${var.domain_zone_id}"
-#   name    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_name}"
-#   type    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
-#   records = ["${aws_acm_certificate.cert.domain_validation_options.0.resource_record_value}"]
-#   ttl     = "3600"
-# }
-
-resource "aws_api_gateway_domain_name" "example" {
-  domain_name = "${var.domain_name}"
-  certificate_arn = "${aws_acm_certificate.cert.arn}"
-}
-
-
-# Example DNS record using Route53.
-# Route53 is not specifically required; any DNS host can be used.
-resource "aws_route53_record" "example" {
-  zone_id = "${var.domain_zone_id}" # See aws_route53_zone for how to create this
-
-  name = "${aws_api_gateway_domain_name.example.domain_name}"
-  type = "A"
-
-  alias {
-    name                   = "${aws_api_gateway_domain_name.example.cloudfront_domain_name}"
-    zone_id                = "${aws_api_gateway_domain_name.example.cloudfront_zone_id}"
-    evaluate_target_health = true
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-resource "aws_api_gateway_base_path_mapping" "test" {
-  api_id      = "${aws_api_gateway_rest_api.gateway.id}"
-  stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"
-  domain_name = "${aws_api_gateway_domain_name.example.domain_name}"
-}
-
-# resource "aws_api_gateway_domain_name" "apitest" {
-#   depends_on  = ["aws_route53_record.cert-valid"]
-#   domain_name = "apitest.giancarlopetrini.com"
-
-#   certificate_arn = "${aws_acm_certificate.cert.arn}"
-# }
-
-# resource "aws_route53_record" "apitest" {
-#   zone_id = "${var.domain_zone_id}" # See aws_route53_zone for how to create this
-
-#   name = "${aws_api_gateway_domain_name.apitest.domain_name}"
-#   type = "A"
-
-#   alias {
-#     name                   = "${aws_api_gateway_domain_name.apitest.cloudfront_domain_name}"
-#     zone_id                = "${aws_api_gateway_domain_name.apitest.cloudfront_zone_id}"
-#     evaluate_target_health = true
-#   }
-# }
-
-
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "${var.namespace}_allow_api_invoke_lambda"
   action        = "lambda:InvokeFunction"
@@ -166,4 +91,12 @@ resource "aws_lambda_permission" "apigw" {
 
   # The /*/* portion grants access from any method on any resource within the API Gateway "REST API"
   source_arn = "${aws_api_gateway_deployment.gateway_deployment.execution_arn}/*/*"
+}
+
+
+
+resource "aws_api_gateway_base_path_mapping" "test" {
+  api_id      = "${aws_api_gateway_rest_api.gateway.id}"
+  stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"
+  domain_name = "${aws_api_gateway_domain_name.example.domain_name}"
 }
