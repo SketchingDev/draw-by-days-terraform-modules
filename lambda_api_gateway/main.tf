@@ -83,15 +83,29 @@ resource "aws_api_gateway_integration" "lambda_root" {
   uri                     = "${aws_lambda_function.gateway_lambda.invoke_arn}"
 }
 
+resource "aws_acm_certificate" "cert" {
+  domain_name       = "${var.domain_name}"
+  validation_method = "DNS"
+}
+
+output "validation-options" {
+  value = "${aws_acm_certificate.cert.domain_validation_options}"
+}
+
+resource "aws_route53_record" "cert-valid" {
+  zone_id = "${var.domain_zone_id}"
+  name    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_name}"
+  type    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
+  records = ["${aws_acm_certificate.cert.domain_validation_options.0.resource_record_value}"]
+  ttl     = "3600"
+}
+
 resource "aws_api_gateway_domain_name" "example" {
-  count = "${var.domain_name != "" ? 1 : 0}"
-  types = "REGIONAL"
   domain_name = "${var.domain_name}"
+  certificate_arn = "${aws_acm_certificate.cert.arn}"
 }
 
 resource "aws_api_gateway_base_path_mapping" "test" {
-  count = "${var.domain_name != "" ? 1 : 0}"
-
   api_id      = "${aws_api_gateway_rest_api.gateway.id}"
   stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"
   domain_name = "${aws_api_gateway_domain_name.example.domain_name}"
