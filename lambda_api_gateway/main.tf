@@ -83,12 +83,18 @@ resource "aws_api_gateway_integration" "lambda_root" {
   uri                     = "${aws_lambda_function.gateway_lambda.invoke_arn}"
 }
 
+resource "aws_api_gateway_domain_name" "example" {
+  count = "${var.domain_name != "" ? 1 : 0}"
+
+  domain_name = "${var.domain_name}"
+}
+
 resource "aws_api_gateway_base_path_mapping" "test" {
   count = "${var.domain_name != "" ? 1 : 0}"
 
   api_id      = "${aws_api_gateway_rest_api.gateway.id}"
   stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"
-  domain_name = "${var.domain_name}"
+  domain_name = "${aws_api_gateway_domain_name.example.domain_name}"
 }
 
 
