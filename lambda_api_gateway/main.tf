@@ -85,7 +85,7 @@ resource "aws_api_gateway_integration" "lambda_root" {
 
 resource "aws_api_gateway_domain_name" "example" {
   count = "${var.domain_name != "" ? 1 : 0}"
-
+  types = "REGIONAL"
   domain_name = "${var.domain_name}"
 }
 
