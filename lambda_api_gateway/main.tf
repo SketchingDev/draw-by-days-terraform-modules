@@ -92,3 +92,11 @@ resource "aws_lambda_permission" "apigw" {
   # The /*/* portion grants access from any method on any resource within the API Gateway "REST API"
   source_arn = "${aws_api_gateway_deployment.gateway_deployment.execution_arn}/*/*"
 }
+
+resource "aws_api_gateway_base_path_mapping" "test" {
+  count = "${var.domain_name != "" ? 1 : 0}"
+
+  api_id      = "${aws_api_gateway_rest_api.gateway.id}"
+  stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"
+  domain_name = "${var.domain_name}"
+}
