@@ -94,7 +94,10 @@ resource "aws_lambda_permission" "apigw" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "test" {
-  count = "${var.domain_name != "" ? 1 : 0}"
+  # Separate variable necessary as conditionally running this resource based on domain_name
+  # can cause 'value of 'count' cannot be computed' when value is derived from the output
+  # of a resource .i.e. ${aws_api_gateway_domain_name.x.domain_name}
+  count = "${var.map_domain_name ? 1 : 0}"
 
   api_id      = "${aws_api_gateway_rest_api.gateway.id}"
   stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"

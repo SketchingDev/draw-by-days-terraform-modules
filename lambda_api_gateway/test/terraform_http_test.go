@@ -27,6 +27,8 @@ func TestApiGatewayReturnsLambdaResponse(t *testing.T) {
 			"stage_name":      "test",
 			"lambda_filename": "test/test-handler.zip",
 			"lambda_handler":  "main.handler",
+			"map_domain_name": false,
+			"domain_name":     "",
 		},
 
 		EnvVars: map[string]string{
