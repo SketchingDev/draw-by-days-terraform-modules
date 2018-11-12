@@ -27,9 +27,20 @@ jobs:
             go test -v -run TestApiGatewayReturnsLambdaResponse
           working_directory: lambda_api_gateway/test/
 
+  readonly_dynamodb_api_gateway:
+    executor: terratest_executor
+    steps:
+      - checkout
+      - run:
+          name: Test DynamoDB API Gateway
+          command: |
+            dep ensure -v
+            go test -v -run TestApiGatewayReturnsEmptyDynamoDBResponse
+          working_directory: readonly_dynamodb_api_gateway/test/
 workflows:
   version: 2
   tests:
     jobs:
       - test_s3_website
       - test_lambda_api_gateway
+      - readonly_dynamodb_api_gateway
