@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "aws_api_gateway_rest_api" "gateway" {
   name        = "${var.namespace}_gateway"
   description = "Rest API for invoking lambdas"
