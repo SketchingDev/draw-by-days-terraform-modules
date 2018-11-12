@@ -13,6 +13,8 @@ to:
 
 ## Development
 
+Below are the steps for running the tests locally:
+
 ```
 cd draw-by-days-terraform-modules
 docker run -it -v $(pwd)/lambda_api_gateway/:/go/src/app sketchingdev/golang-terratest:latest
