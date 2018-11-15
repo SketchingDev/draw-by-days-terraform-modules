@@ -90,6 +90,8 @@ func TestApiGatewayReturnsEmptyDynamoDBResponse(t *testing.T) {
 			"table_arn":        tableArn,
 			"query_path":       "{testId}",
 			"request_template": requestTemplate,
+			"map_domain_name":  false,
+			"domain_name":      "",
 		},
 
 		EnvVars: map[string]string{

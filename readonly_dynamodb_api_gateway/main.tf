@@ -59,7 +59,6 @@ resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
   status_code   = "${aws_api_gateway_method_response.200.status_code}"
 }
 
-
 resource "aws_iam_role" "get-sample" {
     name = "${var.namespace}_dynamodb_role"
     assume_role_policy = <<EOF
@@ -99,4 +98,15 @@ resource "aws_iam_role_policy" "get-sample" {
     name = "get-sample"
     role = "${aws_iam_role.get-sample.id}"
     policy = "${data.template_file.readonly_dynamodb_table.rendered}"
+}
+
+resource "aws_api_gateway_base_path_mapping" "test" {
+  # Separate variable necessary as conditionally running this resource based on domain_name
+  # can cause 'value of 'count' cannot be computed' when value is derived from the output
+  # of a resource .i.e. ${aws_api_gateway_domain_name.x.domain_name}
+  count = "${var.map_domain_name ? 1 : 0}"
+
+  api_id      = "${aws_api_gateway_rest_api.gateway.id}"
+  stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"
+  domain_name = "${var.domain_name}"
 }
