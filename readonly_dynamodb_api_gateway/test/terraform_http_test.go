@@ -86,9 +86,9 @@ func TestApiGatewayReturnsEmptyDynamoDBResponse(t *testing.T) {
 
 		Vars: map[string]interface{}{
 			"namespace":        namespace,
-			"stage_name":       "test",
+			"root_path":        "test",
 			"table_arn":        tableArn,
-			"query_path":       "{testId}",
+			"path_part":        "{testId}",
 			"request_template": requestTemplate,
 			"map_domain_name":  false,
 			"domain_name":      "",
