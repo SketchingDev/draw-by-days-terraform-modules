@@ -3,8 +3,8 @@ resource "aws_lambda_function" "sns_subscriber" {
   function_name = "${var.function_name}"
   handler = "${var.function_handler}"
   runtime = "${var.function_runtime}"
-  filename = "${var.function_name}"
-  source_code_hash = "${base64sha256(file(var.function_name))}"
+  filename = "${var.function_filename}"
+  source_code_hash = "${base64sha256(file(var.function_filename))}"
   role = "${aws_iam_role.lambda_exec.arn}"
 }
 

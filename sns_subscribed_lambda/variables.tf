@@ -6,6 +6,10 @@ variable "function_name" {
   description = "A unique name for the Lambda Function that will be invoked by the notification."
 }
 
+variable "function_filename" {
+  description = "The path to the function's deployment package within the local filesystem"
+}
+
 variable "function_handler" {
   description = "The function entrypoint in your code for the Lambda Function."
   default = "main.handler"
