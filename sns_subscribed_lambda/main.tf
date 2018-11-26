@@ -1,4 +1,3 @@
-
 resource "aws_lambda_function" "sns_subscriber" {
   function_name = "${var.function_name}"
   handler = "${var.function_handler}"
@@ -46,12 +45,4 @@ resource "aws_iam_role" "lambda_exec" {
   ]
 }
 EOF
-}
-
-output "lambda_function_arn" {
-  value = "${aws_lambda_function.sns_subscriber.arn}"
-}
-
-output "lambda_function_role" {
-  value = "${aws_iam_role.lambda_exec.id}"
 }
