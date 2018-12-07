@@ -47,6 +47,11 @@ resource "aws_iam_role" "lambda_exec" {
 EOF
 }
 
+resource "aws_cloudwatch_log_group" "sns_subscriber_logs" {
+  name              = "/aws/lambda/${aws_lambda_function.sns_subscriber.function_name}"
+  retention_in_days = 7
+}
+
 resource "aws_iam_policy" "lambda_logging" {
   name = "lambda_logging"
   path = "/"
@@ -58,7 +63,6 @@ resource "aws_iam_policy" "lambda_logging" {
   "Statement": [
     {
       "Action": [
-        "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
