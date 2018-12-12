@@ -21,7 +21,8 @@ variable "function_runtime" {
 
 variable "function_environment" {
   description = "The Lambda environment's configuration settings. Values live under 'variables' attribute"
-  default = "{}"
+  type        = "map"
+  default     = {}
 }
 
 variable "sns_filter_policy" {
