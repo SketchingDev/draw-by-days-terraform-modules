@@ -5,7 +5,7 @@ resource "aws_lambda_function" "sns_subscriber" {
   filename = "${var.function_filename}"
   source_code_hash = "${base64sha256(file(var.function_filename))}"
   role = "${aws_iam_role.lambda_exec.arn}"
-  environment = "${var.function_environment}"
+  environment = ["${slice( list(var.function_environment), 0, length(var.function_environment) == 0 ? 0 : 1 )}"]
 }
 
 resource "aws_lambda_permission" "allow_process_invoker" {
