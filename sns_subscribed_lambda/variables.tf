@@ -19,6 +19,11 @@ variable "function_runtime" {
   default = "nodejs8.10"
 }
 
+variable "function_environment" {
+  description = "The Lambda environment's configuration settings. Values live under 'variables' attribute"
+  default = "{}"
+}
+
 variable "sns_filter_policy" {
   description = "JSON String with the filter policy that will be used in the subscription to filter messages seen by the Lambda Function."
   default = ""
