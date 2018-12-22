@@ -21,8 +21,6 @@ func TestS3WebsiteServesFile(t *testing.T) {
 	uniqueID := random.RandomString(validS3BucketChars)
 
 	name := fmt.Sprintf("terratest-http-example-%s", uniqueID)
-	// s3BucketName := "terratest_http_example_3"
-	// t.Fatal(s3BucketName)
 	awsRegion := "us-east-1" //:= aws.GetRandomRegion(t, nil, nil)
 
 	terraformOptions := &terraform.Options{
