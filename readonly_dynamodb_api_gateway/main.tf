@@ -6,7 +6,7 @@ resource "aws_api_gateway_rest_api" "gateway" {
 resource "aws_api_gateway_resource" "image" {
   rest_api_id = "${aws_api_gateway_rest_api.gateway.id}"
   parent_id   = "${aws_api_gateway_rest_api.gateway.root_resource_id}"
-  path_part   = "${var.query_path}"
+  path_part   = "${var.path_part}"
 }
 
 resource "aws_api_gateway_method" "proxy" {
@@ -23,7 +23,7 @@ resource "aws_api_gateway_deployment" "gateway_deployment" {
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.gateway.id}"
-  stage_name  = "${var.stage_name}"
+  stage_name  = "${var.root_path}"
 }
 
 resource "aws_api_gateway_integration" "lambda" {
@@ -58,7 +58,6 @@ resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
   http_method   = "${aws_api_gateway_method.proxy.http_method}"
   status_code   = "${aws_api_gateway_method_response.200.status_code}"
 }
-
 
 resource "aws_iam_role" "get-sample" {
     name = "${var.namespace}_dynamodb_role"
@@ -126,4 +125,15 @@ EOF
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role = "${aws_iam_role.get-sample.name}"
   policy_arn = "${aws_iam_policy.api_gateway_logging.arn}"
+}
+
+resource "aws_api_gateway_base_path_mapping" "test" {
+  # Separate variable necessary as conditionally running this resource based on domain_name
+  # can cause 'value of 'count' cannot be computed' when value is derived from the output
+  # of a resource .i.e. ${aws_api_gateway_domain_name.x.domain_name}
+  count = "${var.map_domain_name ? 1 : 0}"
+
+  api_id      = "${aws_api_gateway_rest_api.gateway.id}"
+  stage_name  = "${aws_api_gateway_deployment.gateway_deployment.stage_name}"
+  domain_name = "${var.domain_name}"
 }
