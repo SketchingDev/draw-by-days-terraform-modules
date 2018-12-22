@@ -30,7 +30,7 @@ resource "aws_sns_topic_subscription" "lambda" {
 }
 
 resource "aws_iam_role" "lambda_exec" {
-  name  = "lambda_exec_role"
+  name  = "${var.namespace}_lambda_exec_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -48,13 +48,8 @@ resource "aws_iam_role" "lambda_exec" {
 EOF
 }
 
-resource "aws_cloudwatch_log_group" "sns_subscriber_logs" {
-  name              = "/aws/lambda/${aws_lambda_function.sns_subscriber.function_name}"
-  retention_in_days = 7
-}
-
 resource "aws_iam_policy" "lambda_logging" {
-  name = "lambda_logging"
+  name = "${var.namespace}_lambda_logging"
   path = "/"
   description = "IAM policy for logging from a lambda"
 

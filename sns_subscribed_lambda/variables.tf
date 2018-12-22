@@ -1,3 +1,7 @@
+variable "namespace" {
+  description = "Namespace prefixed to the names of resources"
+}
+
 variable "sns_topic_arn" {
   description = "ARN for the SNS topic that will trigger the lambda"
 }
