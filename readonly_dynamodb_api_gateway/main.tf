@@ -95,9 +95,36 @@ data "template_file" "readonly_dynamodb_table" {
 }
 
 resource "aws_iam_role_policy" "get-sample" {
-    name = "get-sample"
+    name = "${var.namespace}_get-sample"
     role = "${aws_iam_role.get-sample.id}"
     policy = "${data.template_file.readonly_dynamodb_table.rendered}"
+}
+
+resource "aws_iam_policy" "api_gateway_logging" {
+  name = "${var.namespace}_api_gateway_logging"
+  path = "/"
+  description = "IAM policy for logging from a lambda"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:*",
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_logs" {
+  role = "${aws_iam_role.get-sample.name}"
+  policy_arn = "${aws_iam_policy.api_gateway_logging.arn}"
 }
 
 resource "aws_api_gateway_base_path_mapping" "test" {
