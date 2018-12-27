@@ -48,6 +48,11 @@ resource "aws_iam_role" "lambda_exec" {
 EOF
 }
 
+resource "aws_cloudwatch_log_group" "sns_lambda_log_group" {
+  name              = "/aws/lambda/${aws_lambda_function.sns_subscriber.function_name}"
+  retention_in_days = 14
+}
+
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role = "${aws_iam_role.lambda_exec.name}"
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
