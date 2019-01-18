@@ -27,6 +27,7 @@ resource "aws_sns_topic_subscription" "lambda" {
   topic_arn = "${var.sns_topic_arn}"
   protocol  = "lambda"
   endpoint  = "${aws_lambda_function.sns_subscriber.arn}"
+  filter_policy = "${var.sns_filter_policy}"
 }
 
 resource "aws_iam_role" "lambda_exec" {
