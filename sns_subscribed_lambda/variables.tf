@@ -29,6 +29,12 @@ variable "function_environment" {
   default     = {}
 }
 
+variable "function_tracing_config" {
+  description = "Tracing settings for the Lambda function"
+  type        = "map"
+  default     = {}
+}
+
 variable "sns_filter_policy" {
   description = "JSON String with the filter policy that will be used in the subscription to filter messages seen by the Lambda Function."
   default = ""
